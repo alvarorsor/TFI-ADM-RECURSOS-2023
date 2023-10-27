@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TFI_ADM_RECURSOS_2023.Data;
 
@@ -11,9 +12,10 @@ using TFI_ADM_RECURSOS_2023.Data;
 namespace TFI_ADM_RECURSOS_2023.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231027185302_migration4")]
+    partial class migration4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,7 +277,7 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                             apellido = "perez",
                             direccion = "av alem 330",
                             email = "juanperez@gmail.com",
-                            fecha_alta = new DateTime(2023, 10, 27, 20, 57, 29, 75, DateTimeKind.Local).AddTicks(4296),
+                            fecha_alta = new DateTime(2023, 10, 27, 15, 53, 2, 115, DateTimeKind.Local).AddTicks(7874),
                             nombre = "Juan",
                             telefono = 1234567L
                         },
@@ -286,7 +288,7 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                             apellido = "perez",
                             direccion = "av alem 330",
                             email = "juanperez@gmail.com",
-                            fecha_alta = new DateTime(2023, 10, 27, 20, 57, 29, 75, DateTimeKind.Local).AddTicks(4311),
+                            fecha_alta = new DateTime(2023, 10, 27, 15, 53, 2, 115, DateTimeKind.Local).AddTicks(7887),
                             nombre = "Juan",
                             telefono = 1234567L
                         });
@@ -371,9 +373,43 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                             ClienteId = 1,
                             ProyectoId = 1,
                             condicionTributaria = "Responsable inscripto",
-                            fechaEmision = new DateTime(2023, 10, 27, 20, 57, 29, 75, DateTimeKind.Local).AddTicks(4339),
-                            fechaVencimiento = new DateTime(2024, 3, 27, 20, 57, 29, 75, DateTimeKind.Local).AddTicks(4340),
+                            fechaEmision = new DateTime(2023, 10, 27, 15, 53, 2, 115, DateTimeKind.Local).AddTicks(7911),
+                            fechaVencimiento = new DateTime(2024, 3, 27, 15, 53, 2, 115, DateTimeKind.Local).AddTicks(7913),
                             total = 5000.0
+                        });
+                });
+
+            modelBuilder.Entity("TFI_ADM_RECURSOS_2023.Models.Linea_de_factura", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("FacturaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("item")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("precio")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacturaId");
+
+                    b.ToTable("Linea_de_factura");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FacturaId = 1,
+                            item = "Producto 1",
+                            precio = 500.0
                         });
                 });
 
@@ -591,6 +627,17 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                     b.Navigation("Cliente");
 
                     b.Navigation("Proyecto");
+                });
+
+            modelBuilder.Entity("TFI_ADM_RECURSOS_2023.Models.Linea_de_factura", b =>
+                {
+                    b.HasOne("TFI_ADM_RECURSOS_2023.Models.Factura", "Factura")
+                        .WithMany()
+                        .HasForeignKey("FacturaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Factura");
                 });
 
             modelBuilder.Entity("TFI_ADM_RECURSOS_2023.Models.Proyecto", b =>

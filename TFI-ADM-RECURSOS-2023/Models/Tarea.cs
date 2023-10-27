@@ -27,6 +27,9 @@ namespace TFI_ADM_RECURSOS_2023.Models
         public int RecursoId { get; set; }
         [JsonIgnore]
         public virtual Recurso? Recurso { get; set; }
+        
+      
+
 
         [ForeignKey("Proyecto-tarea-FK")]
         public int? ProyectoId { get; set; }

@@ -95,15 +95,7 @@ namespace TFI_ADM_RECURSOS_2023.Data
 
             };
 
-            var lineaFactura1 = new Linea_de_factura
-            {
-                Id = 1,
-                item = "Producto 1",
-                precio = 500,
-                FacturaId = 1
-
-
-            };
+          
 
             var cuentaCorriente1 = new cuentaCorriente
             {
@@ -128,7 +120,7 @@ namespace TFI_ADM_RECURSOS_2023.Data
 
             modelBuilder.Entity<Factura>().HasData(factura1);
 
-            modelBuilder.Entity<Linea_de_factura>().HasData(lineaFactura1);
+           
 
             modelBuilder.Entity<cuentaCorriente>().HasData(cuentaCorriente1);
 
@@ -148,7 +140,7 @@ namespace TFI_ADM_RECURSOS_2023.Data
 
         public DbSet<Factura> Facturas { get; set; }
 
-        public DbSet<Linea_de_factura> Linea_de_factura { get; set; }
+      
 
         public DbSet<cuentaCorriente> cuentaCorrientes { get; set; }
     }

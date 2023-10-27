@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -12,9 +13,9 @@ namespace TFI_ADM_RECURSOS_2023.Models
         public string condicionTributaria { get; set; } = string.Empty;
 
         [Required]
-        public DateTime fechaEmision { get; set; }
+        public DateTime fechaEmision  { get; set; }
 
-        [Required]
+         [Required]
         public DateTime fechaVencimiento { get; set; }
 
         [Required]
@@ -31,5 +32,9 @@ namespace TFI_ADM_RECURSOS_2023.Models
         [JsonIgnore]
         public virtual Proyecto? Proyecto { get; set; }
 
+        
+        }
     }
-}
+
+    
+

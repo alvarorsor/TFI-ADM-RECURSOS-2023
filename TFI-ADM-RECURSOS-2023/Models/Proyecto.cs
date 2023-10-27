@@ -18,24 +18,22 @@ namespace TFI_ADM_RECURSOS_2023.Models
         public string descripcion { get; set; } = string.Empty;
 
         [Required]
-        [StringLength(30)]
         public DateTime fechaInicio { get; set; }
 
         [Required]
-        [StringLength(30)]
         public DateTime fechaEstimadaEntrega { get; set; }
 
-        [Required]
-        [StringLength(30)]
-        public DateTime fechaFinalizacion { get; set; }
+
+        
+        public DateTime fechaFinalizacion { get; set; } 
 
         [ForeignKey("Cliente-proyecto-FK")]
-        public int ClienteId { get; set; }
+        public int ClienteId { get; set; }  
         [JsonIgnore]
         public virtual Cliente? Cliente { get; set; }
 
-      
 
+       
 
 
     }
