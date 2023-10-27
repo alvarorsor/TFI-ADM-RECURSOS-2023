@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TFI_ADM_RECURSOS_2023.Models
 {
@@ -24,17 +25,21 @@ namespace TFI_ADM_RECURSOS_2023.Models
         public string email { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(11)]
-        public int telefono { get; set; } 
+        public long telefono { get; set; } 
 
         [Required]
         [StringLength(13)]
         public string CUIT { get; set; } = string.Empty;
 
+        [Required]
         public DateTime fecha_alta { get; set; }
 
         public virtual List<Proyecto>? Proyectos { get; set; }
 
 
+
+       
     }
+
+   
 }

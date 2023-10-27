@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TFI_ADM_RECURSOS_2023.Data;
 
@@ -11,9 +12,10 @@ using TFI_ADM_RECURSOS_2023.Data;
 namespace TFI_ADM_RECURSOS_2023.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231027181321_datetime_cliente")]
+    partial class datetime_cliente
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,9 +254,6 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<DateTime>("fecha_alta")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("nombre")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -275,7 +274,6 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                             apellido = "perez",
                             direccion = "av alem 330",
                             email = "juanperez@gmail.com",
-                            fecha_alta = new DateTime(2023, 10, 27, 15, 25, 25, 568, DateTimeKind.Local).AddTicks(5551),
                             nombre = "Juan",
                             telefono = 1234567L
                         },
@@ -286,7 +284,6 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                             apellido = "perez",
                             direccion = "av alem 330",
                             email = "juanperez@gmail.com",
-                            fecha_alta = new DateTime(2023, 10, 27, 15, 25, 25, 568, DateTimeKind.Local).AddTicks(5568),
                             nombre = "Juan",
                             telefono = 1234567L
                         });
@@ -371,8 +368,8 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                             ClienteId = 1,
                             ProyectoId = 1,
                             condicionTributaria = "Responsable inscripto",
-                            fechaEmision = new DateTime(2023, 10, 27, 15, 25, 25, 568, DateTimeKind.Local).AddTicks(5597),
-                            fechaVencimiento = new DateTime(2024, 3, 27, 15, 25, 25, 568, DateTimeKind.Local).AddTicks(5598),
+                            fechaEmision = new DateTime(2023, 10, 27, 15, 13, 21, 77, DateTimeKind.Local).AddTicks(1620),
+                            fechaVencimiento = new DateTime(2024, 3, 27, 15, 13, 21, 77, DateTimeKind.Local).AddTicks(1622),
                             total = 5000.0
                         });
                 });
