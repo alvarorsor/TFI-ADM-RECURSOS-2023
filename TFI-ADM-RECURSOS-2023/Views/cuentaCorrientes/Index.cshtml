@@ -1,31 +1,28 @@
-﻿@model IEnumerable<TFI_ADM_RECURSOS_2023.Models.Factura>
+﻿@model IEnumerable<TFI_ADM_RECURSOS_2023.Models.cuentaCorriente>
 
 @{
-    ViewData["Title"] = "Facturas";
+    ViewData["Title"] = "Index";
 }
 
-
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Crear nueva factura</a>
+    <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-dark">
+<table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.condicionTributaria)
+                @Html.DisplayNameFor(model => model.debe)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.fechaVencimiento)
+                @Html.DisplayNameFor(model => model.haber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.total)
+                @Html.DisplayNameFor(model => model.saldo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cliente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Proyecto)
             </th>
             <th></th>
         </tr>
@@ -34,19 +31,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.condicionTributaria)
+                @Html.DisplayFor(modelItem => item.debe)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.fechaVencimiento)
+                @Html.DisplayFor(modelItem => item.haber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.total)
+                @Html.DisplayFor(modelItem => item.saldo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Cliente.CUIT)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Proyecto.descripcion)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

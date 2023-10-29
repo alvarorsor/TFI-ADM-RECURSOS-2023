@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TFI_ADM_RECURSOS_2023.Data;
 
@@ -11,9 +12,10 @@ using TFI_ADM_RECURSOS_2023.Data;
 namespace TFI_ADM_RECURSOS_2023.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231029190507_migration7")]
+    partial class migration7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,6 +268,30 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clientes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CUIT = "23-39572450-9",
+                            apellido = "perez",
+                            direccion = "av alem 330",
+                            email = "juanperez@gmail.com",
+                            fecha_alta = new DateTime(2023, 10, 29, 16, 5, 6, 759, DateTimeKind.Local).AddTicks(5928),
+                            nombre = "Juan",
+                            telefono = 1234567L
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CUIT = "23-39572450-9",
+                            apellido = "perez",
+                            direccion = "av alem 330",
+                            email = "juanperez@gmail.com",
+                            fecha_alta = new DateTime(2023, 10, 29, 16, 5, 6, 759, DateTimeKind.Local).AddTicks(5942),
+                            nombre = "Juan",
+                            telefono = 1234567L
+                        });
                 });
 
             modelBuilder.Entity("TFI_ADM_RECURSOS_2023.Models.cuentaCorriente", b =>
@@ -293,6 +319,16 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                     b.HasIndex("ClienteId");
 
                     b.ToTable("cuentaCorrientes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClienteId = 1,
+                            debe = 0.0,
+                            haber = 1000.0,
+                            saldo = 1000.0
+                        });
                 });
 
             modelBuilder.Entity("TFI_ADM_RECURSOS_2023.Models.Factura", b =>
@@ -329,6 +365,18 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                     b.HasIndex("ProyectoId");
 
                     b.ToTable("Facturas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClienteId = 1,
+                            ProyectoId = 1,
+                            condicionTributaria = "Responsable inscripto",
+                            fechaEmision = new DateTime(2023, 10, 29, 16, 5, 6, 759, DateTimeKind.Local).AddTicks(5973),
+                            fechaVencimiento = new DateTime(2024, 3, 29, 16, 5, 6, 759, DateTimeKind.Local).AddTicks(5975),
+                            total = 5000.0
+                        });
                 });
 
             modelBuilder.Entity("TFI_ADM_RECURSOS_2023.Models.Proyecto", b =>
@@ -356,9 +404,6 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                     b.Property<DateTime>("fechaInicio")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("finalizado")
-                        .HasColumnType("bit");
-
                     b.Property<string>("nombre")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -369,6 +414,18 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                     b.HasIndex("ClienteId");
 
                     b.ToTable("Proyectos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClienteId = 2,
+                            descripcion = "desarrollo de una aplicacion web",
+                            fechaEstimadaEntrega = new DateTime(2024, 2, 29, 0, 0, 0, 0, DateTimeKind.Local),
+                            fechaFinalizacion = new DateTime(2024, 3, 29, 0, 0, 0, 0, DateTimeKind.Local),
+                            fechaInicio = new DateTime(2023, 10, 29, 0, 0, 0, 0, DateTimeKind.Local),
+                            nombre = "proyecto A"
+                        });
                 });
 
             modelBuilder.Entity("TFI_ADM_RECURSOS_2023.Models.Recurso", b =>
@@ -394,6 +451,15 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Recursos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            apellido = "Roman",
+                            nombre = "Juan",
+                            rol = "Analista funcional"
+                        });
                 });
 
             modelBuilder.Entity("TFI_ADM_RECURSOS_2023.Models.Tarea", b =>
@@ -435,6 +501,19 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                     b.HasIndex("RecursoId");
 
                     b.ToTable("Tareas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ProyectoId = 1,
+                            RecursoId = 1,
+                            descripcion = "descripcion de la tarea1",
+                            estadoTarea = "pendiente",
+                            fechaInicio = new DateTime(2023, 10, 29, 0, 0, 0, 0, DateTimeKind.Local),
+                            horasEstimadas = 1200,
+                            nombre = "Tarea1"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

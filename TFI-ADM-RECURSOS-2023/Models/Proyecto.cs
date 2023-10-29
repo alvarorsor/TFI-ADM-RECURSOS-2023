@@ -25,7 +25,10 @@ namespace TFI_ADM_RECURSOS_2023.Models
 
 
         
-        public DateTime fechaFinalizacion { get; set; } 
+        public DateTime? fechaFinalizacion { get; set; }
+
+       
+        public bool finalizado { get; set; }
 
         [ForeignKey("Cliente-proyecto-FK")]
         public int ClienteId { get; set; }  
