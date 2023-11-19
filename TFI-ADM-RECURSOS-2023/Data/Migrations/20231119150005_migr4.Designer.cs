@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TFI_ADM_RECURSOS_2023.Data;
 
@@ -11,9 +12,10 @@ using TFI_ADM_RECURSOS_2023.Data;
 namespace TFI_ADM_RECURSOS_2023.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231119150005_migr4")]
+    partial class migr4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -339,10 +341,10 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("ClienteId")
+                    b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClienteNombre")
+                    b.Property<string>("Clientenombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -524,7 +526,9 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                 {
                     b.HasOne("TFI_ADM_RECURSOS_2023.Models.Cliente", "Cliente")
                         .WithMany("Proyectos")
-                        .HasForeignKey("ClienteId");
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cliente");
                 });

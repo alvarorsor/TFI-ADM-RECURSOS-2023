@@ -16,6 +16,8 @@ namespace TFI_ADM_RECURSOS_2023.Models
         [StringLength(20)]
         public string apellido { get; set; } = string.Empty;
 
+
+
         [Required]
         [StringLength(30)]
         public string direccion { get; set; } = string.Empty;
