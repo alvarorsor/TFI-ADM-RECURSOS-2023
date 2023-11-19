@@ -10,23 +10,23 @@ using TFI_ADM_RECURSOS_2023.Models;
 
 namespace TFI_ADM_RECURSOS_2023.Controllers
 {
-    public class cuentaCorrientesController : Controller
+    public class cuentasCorrienteController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public cuentaCorrientesController(ApplicationDbContext context)
+        public cuentasCorrienteController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: cuentaCorrientes
+        // GET: cuentasCorriente
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.cuentaCorrientes.Include(c => c.Cliente);
+            var applicationDbContext = _context.cuentaCorrientes.Include(c => c.Factura);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: cuentaCorrientes/Details/5
+        // GET: cuentasCorriente/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.cuentaCorrientes == null)
@@ -35,7 +35,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             }
 
             var cuentaCorriente = await _context.cuentaCorrientes
-                .Include(c => c.Cliente)
+                .Include(c => c.Factura)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cuentaCorriente == null)
             {
@@ -45,33 +45,62 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             return View(cuentaCorriente);
         }
 
-        // GET: cuentaCorrientes/Create
+        // GET: cuentasCorriente/Create
         public IActionResult Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "CUIT");
+            ViewData["ClienteNombre"] = new SelectList(_context.Clientes.Select(c => new { c.nombre, c.apellido, NombreCompleto = $"{c.nombre} {c.apellido}" }), "nombre", "NombreCompleto");
+
+            ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id");
             return View();
         }
 
-        // POST: cuentaCorrientes/Create
+        // POST: cuentasCorriente/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,debe,haber,saldo,ClienteId")] cuentaCorriente cuentaCorriente)
+        public async Task<IActionResult> Create([Bind("Id,debe,haber,saldo,tipoDeDocumento,fechaPago,FacturaId,ClienteNombre")] cuentaCorriente cuentaCorriente)
         {
+            /* if (ModelState.IsValid)
+             {
+                 _context.Add(cuentaCorriente);
+                 await _context.SaveChangesAsync();
+                 return RedirectToAction(nameof(Index));
+             }
+             ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "condicionTributaria", cuentaCorriente.FacturaId);
+             return View(cuentaCorriente);*/
+
+
             if (ModelState.IsValid)
             {
-                cuentaCorriente.saldo = cuentaCorriente.debe - cuentaCorriente.haber;
+                // Verificar si el Cliente con el nombre especificado existe
+                var cliente = await _context.Clientes.SingleOrDefaultAsync(c => c.nombre == cuentaCorriente.ClienteNombre);
+
+                if (cliente == null)
+                {
+                    // El cliente no existe, puedes manejar esto según tus necesidades
+                    ModelState.AddModelError("ClienteNombre", "El cliente no existe.");
+                    ViewData["ClienteNombre"] = new SelectList(_context.Clientes, "nombre", "nombre", cuentaCorriente.ClienteNombre);
+                    return View(cuentaCorriente);
+                }
+
+                // Asignar el Cliente al Proyecto
+                cuentaCorriente.Cliente = cliente;
 
                 _context.Add(cuentaCorriente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "CUIT", cuentaCorriente.ClienteId);
+
+            // Crear un SelectList usando la nueva propiedad NombreCompletoCliente
+            ViewData["ClienteNombre"] = new SelectList(_context.Clientes.Select(c => new { c.nombre, c.apellido, NombreCompleto = $"{c.nombre} {c.apellido}" }), "NombreCompleto", "NombreCompleto", cuentaCorriente.ClienteNombre);
+
+            ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id", cuentaCorriente.FacturaId);
+
             return View(cuentaCorriente);
         }
 
-        // GET: cuentaCorrientes/Edit/5
+        // GET: cuentasCorriente/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.cuentaCorrientes == null)
@@ -84,16 +113,16 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "CUIT", cuentaCorriente.ClienteId);
+            ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id", cuentaCorriente.FacturaId);
             return View(cuentaCorriente);
         }
 
-        // POST: cuentaCorrientes/Edit/5
+        // POST: cuentasCorriente/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,debe,haber,saldo,ClienteId")] cuentaCorriente cuentaCorriente)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,debe,haber,saldo,tipoDeDocumento,fechaPago,FacturaId,ClienteNombre")] cuentaCorriente cuentaCorriente)
         {
             if (id != cuentaCorriente.Id)
             {
@@ -104,8 +133,6 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             {
                 try
                 {
-                    cuentaCorriente.saldo = cuentaCorriente.debe - cuentaCorriente.haber;
-
                     _context.Update(cuentaCorriente);
                     await _context.SaveChangesAsync();
                 }
@@ -122,11 +149,11 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "CUIT", cuentaCorriente.ClienteId);
+            ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id", cuentaCorriente.FacturaId);
             return View(cuentaCorriente);
         }
 
-        // GET: cuentaCorrientes/Delete/5
+        // GET: cuentasCorriente/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.cuentaCorrientes == null)
@@ -135,7 +162,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             }
 
             var cuentaCorriente = await _context.cuentaCorrientes
-                .Include(c => c.Cliente)
+                .Include(c => c.Factura)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cuentaCorriente == null)
             {
@@ -145,7 +172,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             return View(cuentaCorriente);
         }
 
-        // POST: cuentaCorrientes/Delete/5
+        // POST: cuentasCorriente/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

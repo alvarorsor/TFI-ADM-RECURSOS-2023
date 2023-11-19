@@ -156,7 +156,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteNombre"] = new SelectList(_context.Clientes, "Id", "nombre", proyecto.ClienteNombre);
+            ViewData["ClienteNombre"] = new SelectList(_context.Clientes, "nombre", "nombre", proyecto.ClienteNombre);
             return View(proyecto);
         }
 

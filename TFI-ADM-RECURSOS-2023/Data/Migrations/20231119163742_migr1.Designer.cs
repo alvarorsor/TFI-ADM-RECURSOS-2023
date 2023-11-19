@@ -12,8 +12,8 @@ using TFI_ADM_RECURSOS_2023.Data;
 namespace TFI_ADM_RECURSOS_2023.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231119150005_migr4")]
-    partial class migr4
+    [Migration("20231119163742_migr1")]
+    partial class migr1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -278,21 +278,38 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ClienteId")
+                    b.Property<int?>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClienteNombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FacturaId")
                         .HasColumnType("int");
 
                     b.Property<double?>("debe")
+                        .IsRequired()
                         .HasColumnType("float");
 
-                    b.Property<double?>("haber")
+                    b.Property<DateTime>("fechaPago")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("haber")
                         .HasColumnType("float");
 
-                    b.Property<double?>("saldo")
+                    b.Property<double>("saldo")
                         .HasColumnType("float");
+
+                    b.Property<string>("tipoDeDocumento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
+
+                    b.HasIndex("FacturaId");
 
                     b.ToTable("cuentaCorrientes");
                 });
@@ -341,10 +358,10 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ClienteId")
+                    b.Property<int?>("ClienteId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Clientenombre")
+                    b.Property<string>("ClienteNombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -498,11 +515,17 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                 {
                     b.HasOne("TFI_ADM_RECURSOS_2023.Models.Cliente", "Cliente")
                         .WithMany()
-                        .HasForeignKey("ClienteId")
+                        .HasForeignKey("ClienteId");
+
+                    b.HasOne("TFI_ADM_RECURSOS_2023.Models.Factura", "Factura")
+                        .WithMany()
+                        .HasForeignKey("FacturaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cliente");
+
+                    b.Navigation("Factura");
                 });
 
             modelBuilder.Entity("TFI_ADM_RECURSOS_2023.Models.Factura", b =>
@@ -526,9 +549,7 @@ namespace TFI_ADM_RECURSOS_2023.Data.Migrations
                 {
                     b.HasOne("TFI_ADM_RECURSOS_2023.Models.Cliente", "Cliente")
                         .WithMany("Proyectos")
-                        .HasForeignKey("ClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClienteId");
 
                     b.Navigation("Cliente");
                 });

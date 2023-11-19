@@ -29,10 +29,28 @@
             @Html.DisplayFor(model => model.saldo)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cliente)
+            @Html.DisplayNameFor(model => model.tipoDeDocumento)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cliente.CUIT)
+            @Html.DisplayFor(model => model.tipoDeDocumento)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.fechaPago)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.fechaPago)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Factura)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Factura.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ClienteNombre)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ClienteNombre)
         </dd>
     </dl>
 </div>

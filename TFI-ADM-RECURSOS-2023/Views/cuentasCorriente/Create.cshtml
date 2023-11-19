@@ -1,0 +1,61 @@
+﻿@model TFI_ADM_RECURSOS_2023.Models.cuentaCorriente
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>cuentaCorriente</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="debe" class="control-label"></label>
+                <input asp-for="debe" class="form-control" />
+                <span asp-validation-for="debe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="haber" class="control-label"></label>
+                <input asp-for="haber" class="form-control" />
+                <span asp-validation-for="haber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="saldo" class="control-label"></label>
+                <input asp-for="saldo" class="form-control" />
+                <span asp-validation-for="saldo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tipoDeDocumento" class="control-label"></label>
+                <input asp-for="tipoDeDocumento" class="form-control" />
+                <span asp-validation-for="tipoDeDocumento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fechaPago" class="control-label"></label>
+                <input asp-for="fechaPago" class="form-control" />
+                <span asp-validation-for="fechaPago" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacturaId" class="control-label"></label>
+                <select asp-for="FacturaId" class ="form-control" asp-items="ViewBag.FacturaId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClienteNombre" class="control-label"></label>
+                <select asp-for="ClienteNombre" class="form-control" asp-items="ViewBag.ClienteNombre"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
