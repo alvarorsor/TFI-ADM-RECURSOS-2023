@@ -2,43 +2,86 @@
 
 @{
     ViewData["Title"] = "Index";
+
+   
 }
 
-<h1>Index</h1>
+<h1>CUENTAS CORRIENTES</h1>
+</n>
+
+<form asp-controller="cuentasCorriente" asp-action="Search" method="get">
+    <label for="clientName">Nombre del Cliente:</label>
+    <input type="text" id="clientName" name="clientName" />
+    <button type="submit">Buscar</button>
+</form>
+
+
+
+
+
+
+
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Crear nueva</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
+
             <th>
-                @Html.DisplayNameFor(model => model.debe)
+                @Html.DisplayNameFor(model => model.codigoDocumento)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.haber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.saldo)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.tipoDeDocumento)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.fechaPago)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Factura)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.ClienteNombre)
             </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.fechaPago)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.debe)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.haber)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.saldo)
+            </th>
+           
+           
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.codigoDocumento)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipoDeDocumento)
+                </td>
+
+                 <td>
+                @Html.DisplayFor(modelItem => item.ClienteNombre)
+            </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.fechaPago)
+                </td>
+
+
             <td>
                 @Html.DisplayFor(modelItem => item.debe)
             </td>
@@ -48,22 +91,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.saldo)
             </td>
+            
+            
+            
+           
             <td>
-                @Html.DisplayFor(modelItem => item.tipoDeDocumento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.fechaPago)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Factura.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClienteNombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }

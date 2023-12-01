@@ -1,0 +1,29 @@
+﻿@page
+@model TFI_ADM_RECURSOS_2023.Views.Reportes.CuentaCorrienteReporteModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>CuentaCorrienteReporte</h1>
+
+
+<label for="txtNombreCliente">Buscar Cliente:</label>
+<input type="text" id="txtNombreCliente" placeholder="Introduce el nombre del cliente">
+
+<button onclick="buscarCliente()">Buscar</button>
+
+<script>
+    function buscarCliente() {
+        // Obtener el valor del textbox
+        var nombreCliente = document.getElementById("txtNombreCliente").value;
+
+        // Realizar alguna acción con el nombre del cliente (puedes enviarlo a un servidor, mostrarlo en la consola, etc.)
+        console.log("Nombre del Cliente: " + nombreCliente);
+
+        // Puedes agregar más lógica aquí según tus necesidades
+    }
+</script>
+
+
+

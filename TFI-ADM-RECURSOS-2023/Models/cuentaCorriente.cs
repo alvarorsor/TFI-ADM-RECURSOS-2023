@@ -10,27 +10,29 @@ namespace TFI_ADM_RECURSOS_2023.Models
         public int Id { get; set; }
 
 
-        [Required]
+        
         public double? debe { get; set; }
 
-        [Required]
-        public double haber { get; set; }
+        
+        public double? haber { get; set; }
 
-        public double saldo { get; set; }
+        public double? saldo { get; set; }
 
         [Required]
+        [Display(Name = "Tipo documento")]
         public string tipoDeDocumento { get; set; }
 
         [Required]
+        [Display(Name = "Fecha de pago")]
         public DateTime fechaPago { get; set; }
 
+        [Required]
+        [Display(Name = "Código Documento")]
+        public int codigoDocumento { get; set; }
 
-        [ForeignKey("cuentaCorriente-factura-FK")]
-        public int FacturaId { get; set; }
-        [JsonIgnore]
-        public virtual Factura? Factura { get; set; }
 
         [ForeignKey("ClienteNombre")]
+        [Display(Name = "Nombre cliente")]
         public string ClienteNombre { get; set; }
         [JsonIgnore]
         public virtual Cliente? Cliente { get; set; }

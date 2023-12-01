@@ -1,0 +1,132 @@
+﻿@model IEnumerable<TFI_ADM_RECURSOS_2023.Models.cuentaCorriente>
+
+@{
+    ViewData["Title"] = "Index";
+
+   
+}
+@using QuestPDF.Fluent;
+@using QuestPDF.Helpers;
+@using QuestPDF.Infrastructure;
+@using QuestPDF.Previewer;
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+
+    <!-- Agrega enlaces a las bibliotecas de Bootstrap -->
+    <!-- Agrega enlaces a las bibliotecas de Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <!-- Agrega enlaces a otros archivos de estilo o scripts que puedas necesitar -->
+    <!-- Agrega otros scripts o enlaces según sea necesario -->
+    <script>
+        $(document).ready(function () {
+            $('#formularioBusqueda').submit(function (e) {
+                e.preventDefault(); // Evitar el envío normal del formulario
+
+                // Realizar la solicitud AJAX
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr('action'), // Obtener la URL del formulario
+                    data: $(this).serialize(), // Serializar los datos del formulario
+                    success: function (data) {
+
+                        // Verificar si la respuesta contiene un mensaje de error
+                        if (data.error) {
+                            // Mostrar el mensaje de error en algún lugar de tu página
+                            $('#errorText').text(data.error);
+                            // Mostrar el modal de error
+                            $('#errorModal').modal('show');
+                        } else {
+                            // Redirigir al usuario a la ubicación del archivo
+                            window.location = "/cuentasCorriente/BuscarCliente?nombreCliente=" + encodeURIComponent($('#nombreCliente').val());
+                        }
+                    },
+                    error: function (error) {
+                        // Mostrar el mensaje de error en algún lugar de tu página
+                        //  $('#errorText').text(data.error);
+                        // Mostrar el modal de error
+                        //  $('#errorModal').modal('show');
+                        console.error("Error en la solicitud AJAX: " + error);
+                    }
+
+
+                });
+            });
+        });
+
+    </script>
+</head>
+<body>
+
+    <!-- Contenido de tu página -->
+    <div class="container">
+    <div>
+        <form asp-controller="cuentaCorrienteReporte" asp-action="BuscarCliente" method="post">
+            <div class="form-group">
+                <label for="nombreCliente">Nombre del Cliente:</label>
+                <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">DESCARGAR PDF</button>
+        </form>
+    </div>
+
+
+    </div>
+
+    <!-- cartel de error de bootstrapL -->
+    
+   
+    <div class="modal" tabindex="-1" id="errorModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ERROR</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="errorText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+

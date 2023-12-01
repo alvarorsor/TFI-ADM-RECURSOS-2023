@@ -4,12 +4,14 @@
     ViewData["Title"] = "Proyectos";
 }
 
+<h1>TABLA DE PROYECTOS</h1>
+</n>
 
 
 <p>
     <a asp-action="Create">Crear nuevo proyecto</a>
 </p>
-<table class="table table-dark">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -66,9 +68,9 @@
             </td>
                 
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
             </td>
         </tr>
 }

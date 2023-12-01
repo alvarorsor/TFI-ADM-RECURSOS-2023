@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TFI_ADM_RECURSOS_2023.Models;
 
@@ -13,6 +14,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();

@@ -22,8 +22,18 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
         // GET: cuentasCorriente
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.cuentaCorrientes.Include(c => c.Factura);
+            var applicationDbContext = _context.cuentaCorrientes;
             return View(await applicationDbContext.ToListAsync());
+        }
+
+
+
+
+        // GET: cuentasCorriente/Search
+        public async Task<IActionResult> Search(string clientName)
+        {
+            var query = _context.cuentaCorrientes.Where(c => c.ClienteNombre.Contains(clientName));
+            return View("Index", await query.ToListAsync());
         }
 
         // GET: cuentasCorriente/Details/5
@@ -35,7 +45,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             }
 
             var cuentaCorriente = await _context.cuentaCorrientes
-                .Include(c => c.Factura)
+                
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cuentaCorriente == null)
             {
@@ -50,7 +60,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
         {
             ViewData["ClienteNombre"] = new SelectList(_context.Clientes.Select(c => new { c.nombre, c.apellido, NombreCompleto = $"{c.nombre} {c.apellido}" }), "nombre", "NombreCompleto");
 
-            ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id");
+            
             return View();
         }
 
@@ -59,7 +69,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,debe,haber,saldo,tipoDeDocumento,fechaPago,FacturaId,ClienteNombre")] cuentaCorriente cuentaCorriente)
+        public async Task<IActionResult> Create([Bind("Id,debe,haber,saldo,tipoDeDocumento,fechaPago,FacturaId,ClienteNombre, codigoDocumento")] cuentaCorriente cuentaCorriente)
         {
             /* if (ModelState.IsValid)
              {
@@ -73,6 +83,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
 
             if (ModelState.IsValid)
             {
+                cuentaCorriente.saldo = cuentaCorriente.haber - cuentaCorriente.debe;
                 // Verificar si el Cliente con el nombre especificado existe
                 var cliente = await _context.Clientes.SingleOrDefaultAsync(c => c.nombre == cuentaCorriente.ClienteNombre);
 
@@ -95,7 +106,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             // Crear un SelectList usando la nueva propiedad NombreCompletoCliente
             ViewData["ClienteNombre"] = new SelectList(_context.Clientes.Select(c => new { c.nombre, c.apellido, NombreCompleto = $"{c.nombre} {c.apellido}" }), "NombreCompleto", "NombreCompleto", cuentaCorriente.ClienteNombre);
 
-            ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id", cuentaCorriente.FacturaId);
+            //ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id", cuentaCorriente.FacturaId);
 
             return View(cuentaCorriente);
         }
@@ -113,7 +124,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             {
                 return NotFound();
             }
-            ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id", cuentaCorriente.FacturaId);
+            //ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id", cuentaCorriente.FacturaId);
             return View(cuentaCorriente);
         }
 
@@ -122,7 +133,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,debe,haber,saldo,tipoDeDocumento,fechaPago,FacturaId,ClienteNombre")] cuentaCorriente cuentaCorriente)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,debe,haber,saldo,tipoDeDocumento,fechaPago,FacturaId,ClienteNombre, codigoDocumento")] cuentaCorriente cuentaCorriente)
         {
             if (id != cuentaCorriente.Id)
             {
@@ -149,7 +160,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id", cuentaCorriente.FacturaId);
+           // ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "Id", cuentaCorriente.FacturaId);
             return View(cuentaCorriente);
         }
 
@@ -162,7 +173,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             }
 
             var cuentaCorriente = await _context.cuentaCorrientes
-                .Include(c => c.Factura)
+               // .Include(c => c.Factura)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cuentaCorriente == null)
             {

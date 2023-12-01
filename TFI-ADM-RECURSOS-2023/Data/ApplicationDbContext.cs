@@ -25,7 +25,7 @@ namespace TFI_ADM_RECURSOS_2023.Data
                     nombre = "Juan",
                     apellido = "perez",
                     telefono = 1234567,
-                    CUIT = "23-39572450-9",
+                    CUIT = "23-39572450-9", 
                     direccion = "av alem 330",
                     email = "juanperez@gmail.com",
                     fecha_alta = DateTime.Now

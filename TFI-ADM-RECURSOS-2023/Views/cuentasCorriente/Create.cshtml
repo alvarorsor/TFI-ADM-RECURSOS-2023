@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Crear</h1>
 
 <h4>cuentaCorriente</h4>
 <hr />
@@ -22,11 +22,7 @@
                 <input asp-for="haber" class="form-control" />
                 <span asp-validation-for="haber" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="saldo" class="control-label"></label>
-                <input asp-for="saldo" class="form-control" />
-                <span asp-validation-for="saldo" class="text-danger"></span>
-            </div>
+           
             <div class="form-group">
                 <label asp-for="tipoDeDocumento" class="control-label"></label>
                 <input asp-for="tipoDeDocumento" class="form-control" />
@@ -38,8 +34,9 @@
                 <span asp-validation-for="fechaPago" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FacturaId" class="control-label"></label>
-                <select asp-for="FacturaId" class ="form-control" asp-items="ViewBag.FacturaId"></select>
+                <label asp-for="codigoDocumento" class="control-label"></label>
+                <input asp-for="codigoDocumento" class="form-control" />
+                <span asp-validation-for="codigoDocumento" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ClienteNombre" class="control-label"></label>
@@ -53,7 +50,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Volver</a>
 </div>
 
 @section Scripts {

@@ -3,15 +3,33 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">MENU PRINCIPAL</h1>
+   
    
 
     <div class="list-group">
        
-        <a href="/Clientes" class="list-group-item list-group-item-action">GESTIONAR CLIENTES</a>
-        <a href="/Proyectos" class="list-group-item list-group-item-action">LISTAR PROYECTOS</a>
-        <a href="/Facturas" class="list-group-item list-group-item-action">LISTAR FACTURAS</a>
-         <a href="/cuentasCorriente" class="list-group-item list-group-item-action">LISTAR MOVIMIENTOS DE CUENTA CORRIENTE</a>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h1 class="display-4">MENU PRINCIPAL</h1>
+            if (User.Identity.Name == "administrador@gmail.com")
+            {
+                <a href="/Clientes" class="list-group-item list-group-item-info">GESTIONAR CLIENTES</a>
+                <a href="/Proyectos" class="list-group-item list-group-item-info">LISTAR PROYECTOS</a>
+                <a href="/cuentasCorriente" class="list-group-item list-group-item-info">LISTAR MOVIMIENTOS DE CUENTA CORRIENTE</a>
+                <a href="/cuentaCorrienteReporte/Index" class="list-group-item list-group-item-info">REPORTE DE CUENTA CORRIENTE</a>
+                <a href="/proyectosReporte/Index" class="list-group-item list-group-item-info">REPORTE DE PROYECTOS</a>
+            }
+
+            else
+            {
+
+
+                <a href="/cuentaCorrienteReporte/Index" class="list-group-item list-group-item-info">REPORTE DE CUENTA CORRIENTE</a>
+                <a href="/proyectosReporte/Index" class="list-group-item list-group-item-info">REPORTE DE PROYECTOS</a>
+            }
+        }
+      
       
     </div>
 

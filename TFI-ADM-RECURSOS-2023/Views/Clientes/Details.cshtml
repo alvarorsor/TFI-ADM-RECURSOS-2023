@@ -4,7 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<link rel="stylesheet" href="https://bootswatch.com/5/litera/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Mooli&display=swap" rel="stylesheet">
+
+<h1>Detalles</h1>
 
 <div>
     <h4>Cliente</h4>
@@ -55,6 +58,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
+    <a asp-action="Index">Volver</a>
 </div>
