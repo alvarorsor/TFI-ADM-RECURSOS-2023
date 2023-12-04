@@ -92,6 +92,9 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,nombre,apellido,direccion,email,telefono,CUIT,fecha_alta")] Cliente cliente)
         {
+
+           
+
             if (id != cliente.Id)
             {
                 return NotFound();
@@ -101,6 +104,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             {
                 try
                 {
+                    cliente.fecha_alta = DateTime.Now;
                     _context.Update(cliente);
                     await _context.SaveChangesAsync();
                 }

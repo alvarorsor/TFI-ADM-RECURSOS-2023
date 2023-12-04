@@ -36,26 +36,26 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> BuscarCliente(string nombreCliente)
+        public async Task<IActionResult> BuscarCliente(string nombreCliente, string apellidoCliente)
         {
 
 
             // Realizar la consulta LINQ para buscar el proyecto del cliente
             var proyectos = _context.Proyectos
             .Include(c => c.Cliente)
-            .Where(c => c.Cliente.nombre == nombreCliente)
+            .Where(c => c.Cliente.nombre == nombreCliente && c.Cliente.apellido == apellidoCliente)
             .ToList();
 
             // Realizar la consulta LINQ para buscar el cliente
             Cliente cliente = _context.cuentaCorrientes
                 .Include(c => c.Cliente)
-                .FirstOrDefault(c => c.Cliente.nombre == nombreCliente)?.Cliente;
+                .FirstOrDefault(c => c.Cliente.nombre == nombreCliente && c.Cliente.apellido == apellidoCliente)?.Cliente;
 
 
 
 
 
-            if (proyectos != null)
+            if (proyectos.Count != 0)
             {
 
                 var data = Document.Create(document =>

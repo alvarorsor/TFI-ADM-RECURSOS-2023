@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TFI_ADM_RECURSOS_2023.Data;
 using TFI_ADM_RECURSOS_2023.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -17,52 +14,52 @@ using QuestPDF.Previewer;
 
 namespace TFI_ADM_RECURSOS_2023.Controllers
 {
-    public class cuentaCorrienteReporteController : Controller
+    public class ClientesReporteController : Controller
     {
-
-     
-
-
         private readonly ApplicationDbContext _context;
 
-        public cuentaCorrienteReporteController(ApplicationDbContext context)
+        public ClientesReporteController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: cuentaCorrienteReporte
+        // GET: ClientesReporte
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.cuentaCorrientes;
-            return View(await applicationDbContext.ToListAsync());
+              return _context.Clientes != null ? 
+                          View(await _context.Clientes.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Clientes'  is null.");
         }
 
 
-     
-            [HttpPost]
-            public async Task<IActionResult> BuscarCliente(string nombreCliente, string apellidoCliente)
-            {
 
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> BuscarCliente(string fechaInicio, string fechaFin)
+        {
+            // Convertir las fechas de cadena a DateTime
+            DateTime.TryParse(fechaInicio, out DateTime fechaInicioDateTime);
+            DateTime.TryParse(fechaFin, out DateTime fechaFinDateTime);
 
             // Realizar la consulta LINQ para buscar la cuenta corriente del cliente
-            var cuentasCorrientes = _context.cuentaCorrientes
-            .Include(c => c.Cliente)
-            .Where(c => c.Cliente.nombre == nombreCliente && c.Cliente.apellido == apellidoCliente)
+            var clientes = _context.Clientes
+            
+            .Where(c => c.fecha_alta >= fechaInicioDateTime && c.fecha_alta <= fechaFinDateTime)
             .ToList();
 
-            // Realizar la consulta LINQ para buscar el cliente
-            Cliente cliente = _context.cuentaCorrientes
-                .Include(c => c.Cliente)
-                .FirstOrDefault(c => c.Cliente.nombre == nombreCliente && c.Cliente.apellido == apellidoCliente)?.Cliente;
+           
 
 
 
 
 
-            if (cuentasCorrientes.Count != 0)
+            if (clientes.Count != 0)
             {
 
-              var data =  Document.Create(document =>
+                var data = Document.Create(document =>
                 {
                     document.Page(page =>
                     {
@@ -74,7 +71,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
 
                         page.Header().ShowOnce().Row(row =>
                         {
-                           // row.ConstantItem(140).Height(60).Placeholder();
+                            // row.ConstantItem(140).Height(60).Placeholder();
 
 
                             row.RelativeItem().Column(col =>
@@ -93,7 +90,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
 
                                 col.Item().Background("#257272").Border(1)
                                 .BorderColor("#257272").AlignCenter()
-                                .Text("REPORTE CUENTA CORRIENTE").FontColor("#fff");
+                                .Text("REPORTE DE CLIENTES").FontColor("#fff");
 
                                 col.Item().Border(1).BorderColor("#257272").
                                 AlignCenter().Text("R0001");
@@ -104,28 +101,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
 
                         page.Content().PaddingVertical(10).Column(col1 =>
                         {
-                            col1.Item().Column(col2 =>
-                            {
-                                col2.Item().Text("Datos del cliente").Underline().Bold();
-
-                                col2.Item().Text(txt =>
-                                {
-                                    txt.Span("Nombre: ").SemiBold().FontSize(10);
-                                txt.Span(cliente.nombre + " " + cliente.apellido).FontSize(10);
-                                });
-
-                                col2.Item().Text(txt =>
-                                {
-                                    txt.Span("CUIT: ").SemiBold().FontSize(10);
-                                    txt.Span(cliente.CUIT.ToString()).FontSize(10);
-                                });
-
-                                col2.Item().Text(txt =>
-                                {
-                                    txt.Span("Direccion: ").SemiBold().FontSize(10);
-                                    txt.Span(cliente.direccion).FontSize(10);
-                                });
-                            });
+                            
 
                             col1.Item().LineHorizontal(0.5f);
 
@@ -146,51 +122,54 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
                                 tabla.Header(header =>
                                 {
                                     header.Cell().Background("#257272")
-                            .Padding(-1).Text("Debe").FontColor("#fff");
+                            .Padding(-1).Text("Nombre").FontColor("#fff");
 
                                     header.Cell().Background("#257272")
-                            .Padding(-1).Text("Haber").FontColor("#fff");
+                            .Padding(-1).Text("Apellido").FontColor("#fff");
 
                                     header.Cell().Background("#257272")
-                            .Padding(-1).Text("Saldo").FontColor("#fff");
+                            .Padding(-1).Text("Direccion").FontColor("#fff");
 
                                     header.Cell().Background("#257272")
-                            .Padding(-1).Text("Documento").FontColor("#fff");
+                            .Padding(-1).Text("Email").FontColor("#fff");
 
                                     header.Cell().Background("#257272")
-                       .Padding(-1).Text("Fecha pago").FontColor("#fff");
+                       .Padding(-1).Text("Telefono").FontColor("#fff");
 
                                     header.Cell().Background("#257272")
-                            .Padding(-1).Text("Codigo documento").FontColor("#fff");
+                      .Padding(-1).Text("CUIT").FontColor("#fff");
 
-                                    
+
+
+
                                 });
 
-                                foreach (var item in cuentasCorrientes)
+                                foreach (var item in clientes)
                                 {
 
 
-                                  
+
 
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                             .Padding(-1).Text(item.debe.ToString()).FontSize(10);
+                             .Padding(-1).Text(item.nombre.ToString()).FontSize(10);
 
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                               .Padding(-1).Text(item.haber.ToString()).FontSize(10);
+                               .Padding(-1).Text(item.apellido.ToString()).FontSize(10);
 
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                               .Padding(-1).Text(item.saldo.ToString()).FontSize(10);
+                               .Padding(-1).Text(item.direccion.ToString()).FontSize(10);
 
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                           .Padding(-1).Text(item.tipoDeDocumento.ToString()).FontSize(10);
+                           .Padding(-1).Text(item.email.ToString()).FontSize(10);
 
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                          .Padding(-1).Text(item.fechaPago.ToString()).FontSize(10);
+                          .Padding(-1).Text(item.telefono.ToString()).FontSize(10);
 
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                           .Padding(-1).Text(item.codigoDocumento.ToString()).FontSize(10);
+                         .Padding(-1).Text(item.CUIT.ToString()).FontSize(10);
 
-                                    
+
+
 
 
 
@@ -199,7 +178,7 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
 
                             });
 
-                          
+
 
                             col1.Spacing(10);
                         });
@@ -225,84 +204,88 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             }
             else
             {
-               
+
 
                 // Devolver un resultado JSON con el mensaje de error
                 return Json(new { error = "Cliente no encontrado" });
             }
         }
-    
-        
 
 
-        // GET: cuentaCorrienteReporte/Details/5
+
+
+
+
+
+
+
+
+
+
+        // GET: ClientesReporte/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.cuentaCorrientes == null)
+            if (id == null || _context.Clientes == null)
             {
                 return NotFound();
             }
 
-            var cuentaCorriente = await _context.cuentaCorrientes
-               // .Include(c => c.Factura)
+            var cliente = await _context.Clientes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuentaCorriente == null)
+            if (cliente == null)
             {
                 return NotFound();
             }
 
-            return View(cuentaCorriente);
+            return View(cliente);
         }
 
-        // GET: cuentaCorrienteReporte/Create
+        // GET: ClientesReporte/Create
         public IActionResult Create()
         {
-           //ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "condicionTributaria");
             return View();
         }
 
-        // POST: cuentaCorrienteReporte/Create
+        // POST: ClientesReporte/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,debe,haber,saldo,tipoDeDocumento,fechaPago,FacturaId,ClienteNombre, codigoDocumento")] cuentaCorriente cuentaCorriente)
+        public async Task<IActionResult> Create([Bind("Id,nombre,apellido,direccion,email,telefono,CUIT,fecha_alta")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cuentaCorriente);
+                _context.Add(cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-           // ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "condicionTributaria", cuentaCorriente.FacturaId);
-            return View(cuentaCorriente);
+            return View(cliente);
         }
 
-        // GET: cuentaCorrienteReporte/Edit/5
+        // GET: ClientesReporte/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.cuentaCorrientes == null)
+            if (id == null || _context.Clientes == null)
             {
                 return NotFound();
             }
 
-            var cuentaCorriente = await _context.cuentaCorrientes.FindAsync(id);
-            if (cuentaCorriente == null)
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente == null)
             {
                 return NotFound();
             }
-           // ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "condicionTributaria", cuentaCorriente.FacturaId);
-            return View(cuentaCorriente);
+            return View(cliente);
         }
 
-        // POST: cuentaCorrienteReporte/Edit/5
+        // POST: ClientesReporte/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,debe,haber,saldo,tipoDeDocumento,fechaPago,FacturaId,ClienteNombre,codigoDocumento")] cuentaCorriente cuentaCorriente)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,nombre,apellido,direccion,email,telefono,CUIT,fecha_alta")] Cliente cliente)
         {
-            if (id != cuentaCorriente.Id)
+            if (id != cliente.Id)
             {
                 return NotFound();
             }
@@ -311,12 +294,12 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
             {
                 try
                 {
-                    _context.Update(cuentaCorriente);
+                    _context.Update(cliente);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!cuentaCorrienteExists(cuentaCorriente.Id))
+                    if (!ClienteExists(cliente.Id))
                     {
                         return NotFound();
                     }
@@ -327,51 +310,49 @@ namespace TFI_ADM_RECURSOS_2023.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-           // ViewData["FacturaId"] = new SelectList(_context.Facturas, "Id", "condicionTributaria", cuentaCorriente.FacturaId);
-            return View(cuentaCorriente);
+            return View(cliente);
         }
 
-        // GET: cuentaCorrienteReporte/Delete/5
+        // GET: ClientesReporte/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.cuentaCorrientes == null)
+            if (id == null || _context.Clientes == null)
             {
                 return NotFound();
             }
 
-            var cuentaCorriente = await _context.cuentaCorrientes
-              //  .Include(c => c.Factura)
+            var cliente = await _context.Clientes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuentaCorriente == null)
+            if (cliente == null)
             {
                 return NotFound();
             }
 
-            return View(cuentaCorriente);
+            return View(cliente);
         }
 
-        // POST: cuentaCorrienteReporte/Delete/5
+        // POST: ClientesReporte/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.cuentaCorrientes == null)
+            if (_context.Clientes == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.cuentaCorrientes'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Clientes'  is null.");
             }
-            var cuentaCorriente = await _context.cuentaCorrientes.FindAsync(id);
-            if (cuentaCorriente != null)
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente != null)
             {
-                _context.cuentaCorrientes.Remove(cuentaCorriente);
+                _context.Clientes.Remove(cliente);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool cuentaCorrienteExists(int id)
+        private bool ClienteExists(int id)
         {
-          return (_context.cuentaCorrientes?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Clientes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

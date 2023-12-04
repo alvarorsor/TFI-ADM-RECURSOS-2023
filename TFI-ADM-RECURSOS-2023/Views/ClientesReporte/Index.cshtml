@@ -1,9 +1,9 @@
-﻿@model IEnumerable<TFI_ADM_RECURSOS_2023.Models.cuentaCorriente>
+﻿@model IEnumerable<TFI_ADM_RECURSOS_2023.Models.Cliente>
 
 @{
     ViewData["Title"] = "Index";
 
-   
+
 }
 @using QuestPDF.Fluent;
 @using QuestPDF.Helpers;
@@ -18,7 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+
 
     <!-- Agrega enlaces a las bibliotecas de Bootstrap -->
     <!-- Agrega enlaces a las bibliotecas de Bootstrap -->
@@ -69,26 +69,26 @@
 
     <!-- Contenido de tu página -->
     <div class="container">
-    <div>
-        <form asp-controller="cuentaCorrienteReporte" asp-action="BuscarCliente" method="post">
-            <div class="form-group">
-                <label for="nombreCliente">Nombre del Cliente:</label>
-                <input type="text" id="nombreCliente" name="nombreCliente" class="form-control" />
-                </n>
-                    <label for="nombreCliente">Apellido del Cliente:</label>
-                    
-                    <input type="text" id="apellidoCliente" name="apellidoCliente" class="form-control" />
-            </div>
-            <button type="submit" class="btn btn-primary">DESCARGAR PDF</button>
-        </form>
+        <div>
+            <form asp-controller="ClientesReporte" asp-action="BuscarCliente" method="post">
+                <div class="form-group">
+
+                    <label for="fechaInicio">Fecha de Inicio:</label>
+                    <input type="text" id="fechaInicio" name="fechaInicio" class="form-control" />
+
+                    <label for="fechaFin">Fecha de Fin:</label>
+                    <input type="text" id="fechaFin" name="fechaFin" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">DESCARGAR PDF</button>
+            </form>
+        </div>
     </div>
 
-
-    </div>
 
     <!-- cartel de error de bootstrapL -->
-    
-   
+
+
     <div class="modal" tabindex="-1" id="errorModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -101,36 +101,16 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    
+
                 </div>
             </div>
         </div>
     </div>
 
 
-    
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-   
-
-
-
-
-
-
-
-
-
 
 
 
